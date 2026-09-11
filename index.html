@@ -4,246 +4,636 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bastián Carrizo</title>
-<meta name="description" content="Software engineer in Santiago, Chile. I build mobile, backend and data products.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+<meta name="description" content="Software engineer in Santiago, Chile. I build mobile, backend and the data that proves it worked.">
+<meta property="og:title" content="Bastián Carrizo">
+<meta property="og:description" content="Software engineer in Santiago, Chile. I build mobile, backend and the data that proves it worked.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230B0F14'/><path d='M4 17h5l2-6 3 12 3-9 2 3h9' fill='none' stroke='%23FFB020' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<script>document.documentElement.className+=" js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
 <style>
   :root{
-    --bg:#fbfbfd; --panel:#ffffff; --text:#1d1d1f; --muted:#6e6e73;
-    --line:#e3e3e6; --accent:#0071e3; --chip:#f2f2f4;
+    --ink:#0d141b;
+    --ground:#f3f5f7;
+    --surface:#ffffff;
+    --muted:#5d6b7a;
+    --line:#d8dee5;
+    --line-soft:#e7ebef;
+    --accent:#a35c00;
+    --accent-bright:#c97a0a;
+    --trace:#d08221;
+    --glow:rgba(163,92,0,.16);
+    --shadow:0 1px 2px rgba(13,20,27,.05), 0 12px 32px rgba(13,20,27,.06);
+    --blend:multiply;
+
+    --display:"Bricolage Grotesque","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --body:"IBM Plex Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
   }
   @media (prefers-color-scheme: dark){
-    :root{ --bg:#000; --panel:#111113; --text:#f5f5f7; --muted:#98989d;
-           --line:#2a2a2d; --accent:#2997ff; --chip:#1c1c1f; }
+    :root:not([data-theme="light"]){
+      --ink:#e8eef5;
+      --ground:#0b0f14;
+      --surface:#121922;
+      --muted:#8697a8;
+      --line:#212c38;
+      --line-soft:#1a232d;
+      --accent:#ffb020;
+      --accent-bright:#ffc453;
+      --trace:#ffb020;
+      --glow:rgba(255,176,32,.20);
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 18px 44px rgba(0,0,0,.35);
+      --blend:screen;
+    }
   }
+  :root[data-theme="dark"]{
+    --ink:#e8eef5; --ground:#0b0f14; --surface:#121922; --muted:#8697a8;
+    --line:#212c38; --line-soft:#1a232d; --accent:#ffb020; --accent-bright:#ffc453;
+    --trace:#ffb020; --glow:rgba(255,176,32,.20);
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 18px 44px rgba(0,0,0,.35);
+    --blend:screen;
+  }
+
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
   body{
-    margin:0; background:var(--bg); color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size:17px; line-height:1.55; -webkit-font-smoothing:antialiased;
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--body); font-size:17px; line-height:1.6;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
   }
-  .wrap{max-width:740px; margin:0 auto; padding:0 24px}
-  header{padding:72px 0 44px}
-  .hero{display:flex; gap:28px; align-items:center; flex-wrap:wrap}
-  .avatar{
-    width:104px; height:104px; border-radius:50%; object-fit:cover;
-    border:1px solid var(--line); background:var(--chip); flex-shrink:0;
+  ::selection{background:var(--accent); color:var(--ground)}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+
+  .shell{max-width:1080px; margin:0 auto; padding:0 32px}
+
+  #progress{
+    position:fixed; top:0; left:0; height:2px; width:0; z-index:99;
+    background:linear-gradient(90deg, transparent, var(--accent)); transition:width .1s linear;
   }
-  h1{font-size:38px; line-height:1.1; letter-spacing:-0.02em; margin:0 0 6px; font-weight:650}
-  .tagline{color:var(--muted); margin:0 0 14px; font-size:18px}
-  .links{display:flex; flex-wrap:wrap; gap:8px}
-  .links a{
-    display:inline-block; padding:5px 13px; border-radius:980px; font-size:14.5px;
-    text-decoration:none; color:var(--text); background:var(--chip);
-    border:1px solid transparent; transition:border-color .15s ease, color .15s ease;
+
+  /* ---------- hero ---------- */
+  .hero{position:relative; min-height:92vh; display:flex; flex-direction:column; justify-content:flex-end;
+        padding-bottom:44px; overflow:hidden}
+  #signal{position:absolute; inset:0; width:100%; height:100%; z-index:2; pointer-events:none;
+          mix-blend-mode:var(--blend); opacity:1}
+  .hero .shell{position:relative; z-index:1; width:100%}
+  .hero .actions,.hero .eyebrow{position:relative; z-index:3}
+  .portrait{
+    position:absolute; right:max(4vw,24px); bottom:12vh; width:clamp(180px,22vw,290px);
+    aspect-ratio:4/5; z-index:1; overflow:hidden; background:var(--surface);
+    box-shadow:0 24px 60px rgba(0,0,0,.22);
   }
-  .links a:hover{border-color:var(--line); color:var(--accent)}
-  .intro{font-size:19px; margin:36px 0 0; max-width:62ch}
-  .intro a{color:var(--accent); text-decoration:none}
-  .intro a:hover{text-decoration:underline}
-  section{padding:40px 0; border-top:1px solid var(--line)}
-  h2{font-size:13px; text-transform:uppercase; letter-spacing:.09em; color:var(--muted);
-     margin:0 0 22px; font-weight:600}
-  .job{margin-bottom:30px}
-  .job:last-child{margin-bottom:0}
-  .job-head{display:flex; justify-content:space-between; align-items:baseline; gap:14px; flex-wrap:wrap}
-  .job-title{font-weight:600; font-size:17.5px; margin:0}
-  .job-when{color:var(--muted); font-size:14.5px; white-space:nowrap}
-  .job-where{color:var(--muted); font-size:15px; margin:1px 0 9px}
-  ul{margin:0; padding-left:19px}
-  li{margin-bottom:5px}
-  .cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:14px}
+  .portrait img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    filter:grayscale(.35) contrast(1.04); transition:filter .8s ease, transform 1.2s cubic-bezier(.19,1,.22,1);
+    transform:scale(1.02);
+  }
+  .portrait:hover img{filter:grayscale(0); transform:scale(1)}
+  .portrait figcaption{
+    position:absolute; left:0; right:0; bottom:0; padding:9px 11px; color:#fff;
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase;
+    background:linear-gradient(transparent, rgba(3,7,11,.78));
+  }
+  @media (max-width:900px){ .portrait{display:none} }
+
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--muted); display:flex; align-items:center; gap:10px; margin-bottom:26px;
+  }
+  .eyebrow .dot{width:7px; height:7px; border-radius:50%; background:var(--accent);
+                box-shadow:0 0 0 0 var(--glow); animation:pulse 2.6s ease-out infinite}
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 var(--glow)}
+    70%{box-shadow:0 0 0 13px rgba(0,0,0,0)}
+    100%{box-shadow:0 0 0 0 rgba(0,0,0,0)}
+  }
+  h1{
+    font-family:var(--display); font-weight:800; font-size:clamp(52px,10.5vw,138px);
+    line-height:.92; letter-spacing:-.035em; margin:0 0 22px; text-wrap:balance;
+  }
+  h1 .line{display:block; overflow:hidden}
+  h1 .line.hollow span{
+    color:transparent; -webkit-text-stroke:2px var(--ink); paint-order:stroke fill;
+  }
+  h1 .line span{display:block}
+  .js h1 .line span{transform:translateY(102%); animation:rise .95s cubic-bezier(.19,1,.22,1) forwards}
+  h1 .line:nth-child(2) span{animation-delay:.1s}
+  @keyframes rise{to{transform:translateY(0)}}
+  .lede{
+    max-width:37ch; font-size:clamp(18px,2.1vw,21px); color:var(--muted); margin:0 0 30px;
+  }
+  .js .lede{opacity:0; animation:fade 1s ease .45s forwards}
+  .lede b{color:var(--ink); font-weight:500}
+  @keyframes fade{to{opacity:1}}
+  .actions{display:flex; flex-wrap:wrap; gap:10px}
+  .js .actions{opacity:0; animation:fade 1s ease .62s forwards}
+  .btn{
+    font-family:var(--mono); font-size:13px; letter-spacing:.04em; text-decoration:none;
+    padding:10px 17px; border:1px solid var(--line); border-radius:2px; background:transparent;
+    transition:border-color .2s, color .2s, background .2s; white-space:nowrap;
+  }
+  .btn:hover{border-color:var(--accent); color:var(--accent)}
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:var(--ground); font-weight:500}
+  .btn.primary:hover{background:var(--accent-bright); border-color:var(--accent-bright); color:var(--ground)}
+
+  /* ---------- metrics strip ---------- */
+  .strip{border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--surface)}
+  .strip .shell{display:grid; grid-template-columns:repeat(3,1fr); gap:0}
+  .metric{padding:30px 0; position:relative}
+  .metric + .metric{padding-left:32px}
+  .metric + .metric::before{content:""; position:absolute; left:0; top:26px; bottom:26px; width:1px; background:var(--line-soft)}
+  .metric .num{
+    font-family:var(--display); font-weight:700; font-size:clamp(30px,4.4vw,46px); line-height:1;
+    letter-spacing:-.02em; font-variant-numeric:tabular-nums; display:block; margin-bottom:9px;
+  }
+  .metric .num i{font-style:normal; color:var(--accent)}
+  .metric .cap{font-family:var(--mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); line-height:1.5}
+
+  /* ---------- sections ---------- */
+  section.block{padding:78px 0; border-bottom:1px solid var(--line-soft)}
+  .head{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--muted); margin:0 0 34px; display:flex; align-items:baseline; gap:14px;
+  }
+  .head::after{content:""; flex:1; height:1px; background:var(--line-soft)}
+
+  .grid{display:grid; grid-template-columns:170px 1fr; gap:28px}
+  .entry{padding:26px 0; border-top:1px solid var(--line-soft)}
+  .entry:first-of-type{border-top:none; padding-top:0}
+  .when{font-family:var(--mono); font-size:12.5px; color:var(--muted); letter-spacing:.02em; padding-top:5px}
+  .role{font-family:var(--display); font-weight:700; font-size:22px; letter-spacing:-.012em; margin:0 0 3px}
+  .org{color:var(--muted); font-size:15px; margin:0 0 14px}
+  .entry ul{margin:0; padding-left:0; list-style:none}
+  .entry li{position:relative; padding-left:20px; margin-bottom:9px; max-width:64ch}
+  .entry li::before{
+    content:""; position:absolute; left:0; top:11px; width:8px; height:1.5px; background:var(--accent); opacity:.75;
+  }
+
+  /* ---------- projects ---------- */
+  .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:0}
   .card{
-    display:block; padding:18px 20px; border:1px solid var(--line); border-radius:14px;
-    background:var(--panel); text-decoration:none; color:inherit;
-    transition:transform .18s ease, border-color .18s ease;
+    display:block; background:var(--ground); padding:26px 24px 22px; text-decoration:none; position:relative;
+    transition:background .25s ease; box-shadow:0 0 0 1px var(--line-soft);
   }
-  .card:hover{transform:translateY(-2px); border-color:var(--accent)}
-  .card h3{margin:0 0 5px; font-size:16.5px; font-weight:600}
-  .card p{margin:0; color:var(--muted); font-size:15px; line-height:1.45}
-  .card .tags{margin-top:11px; font-size:12.5px; color:var(--muted); letter-spacing:.02em}
-  .badge{
-    display:inline-block; font-size:11.5px; font-weight:600; letter-spacing:.03em;
-    text-transform:uppercase; color:var(--accent); margin-bottom:7px;
+  .card::before{
+    content:""; position:absolute; left:0; right:0; top:0; height:2px; background:var(--accent);
+    transform:scaleX(0); transform-origin:left; transition:transform .38s cubic-bezier(.19,1,.22,1);
   }
-  .stack p{margin:0 0 9px; font-size:16px}
-  .stack strong{font-weight:600}
-  .stack span{color:var(--muted)}
-  footer{padding:44px 0 72px; border-top:1px solid var(--line); color:var(--muted); font-size:15px}
-  footer a{color:var(--accent); text-decoration:none}
-  @media (max-width:560px){
-    header{padding:48px 0 32px}
-    h1{font-size:31px}
-    .avatar{width:84px; height:84px}
-    .intro{font-size:17.5px}
+  a.card:hover{background:var(--surface)}
+  a.card:hover::before{transform:scaleX(1)}
+  .card .flag{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--accent); display:inline-block; margin-bottom:10px;
+  }
+  .card h3{font-family:var(--display); font-weight:700; font-size:19.5px; margin:0 0 8px; letter-spacing:-.01em}
+  .card p{margin:0; color:var(--muted); font-size:15.5px; line-height:1.5; max-width:40ch}
+  .card .tags{margin-top:16px; font-family:var(--mono); font-size:11.5px; color:var(--muted); letter-spacing:.04em}
+  .card .go{
+    position:absolute; right:22px; bottom:20px; font-family:var(--mono); font-size:12px; color:var(--muted);
+    opacity:0; transform:translateX(-5px); transition:opacity .25s, transform .25s, color .25s;
+  }
+  a.card:hover .go{opacity:1; transform:translateX(0); color:var(--accent)}
+
+  /* ---------- stack ---------- */
+  .stack-row{display:grid; grid-template-columns:170px 1fr; gap:28px; padding:13px 0; border-top:1px solid var(--line-soft)}
+  .stack-row:first-child{border-top:none}
+  .stack-row dt{font-family:var(--mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); padding-top:3px}
+  .stack-row dd{margin:0; font-size:16.5px}
+
+  .ticker{
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--surface);
+    overflow:hidden; padding:15px 0; margin:0; white-space:nowrap;
+  }
+  .ticker .rail{display:inline-flex; gap:0; will-change:transform}
+  .js .ticker .rail{animation:slide 46s linear infinite}
+  .ticker:hover .rail{animation-play-state:paused}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .ticker span{
+    font-family:var(--mono); font-size:12.5px; letter-spacing:.13em; text-transform:uppercase;
+    color:var(--muted); padding:0 26px; display:inline-block;
+  }
+  .ticker span b{color:var(--ink); font-weight:500}
+
+  /* ---------- postcard ---------- */
+  .postcard{position:relative; height:clamp(340px,52vw,560px); overflow:hidden; background:var(--surface)}
+  .postcard img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 55%;
+    filter:grayscale(1) contrast(1.06); transform:scale(1.06);
+    transition:filter 1.4s ease, transform 1.4s cubic-bezier(.19,1,.22,1);
+  }
+  .postcard.in img{filter:grayscale(0) contrast(1); transform:scale(1)}
+  .postcard::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(4,8,12,.05) 0%, rgba(4,8,12,.34) 52%, rgba(4,8,12,.78) 100%);
+  }
+  .postcard .copy{
+    position:absolute; left:0; right:0; bottom:0; z-index:2; padding-bottom:46px; color:#fff;
+  }
+  .postcard .kicker{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:rgba(255,255,255,.72); margin:0 0 14px;
+  }
+  .postcard h2{
+    font-family:var(--display); font-weight:700; font-size:clamp(30px,5.6vw,62px); line-height:1.02;
+    letter-spacing:-.028em; margin:0; max-width:15ch; color:#fff;
+  }
+  @media (max-width:760px){ .postcard .copy{padding-bottom:28px} .postcard h2{max-width:12ch} }
+
+  footer{padding:70px 0 92px}
+  footer .big{
+    font-family:var(--display); font-weight:700; font-size:clamp(28px,5vw,50px); letter-spacing:-.025em;
+    line-height:1.05; margin:0 0 24px; max-width:16ch;
+  }
+  footer a.mail{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent; transition:border-color .2s}
+  footer a.mail:hover{border-color:var(--accent)}
+  .foot-meta{font-family:var(--mono); font-size:12px; color:var(--muted); letter-spacing:.05em; margin-top:36px;
+             display:flex; gap:22px; flex-wrap:wrap}
+
+  /* ---------- scroll reveal ---------- */
+  .js .reveal{opacity:0; transform:translateY(14px)}
+  .reveal.in{opacity:1; transform:none; transition:opacity .7s cubic-bezier(.19,1,.22,1), transform .7s cubic-bezier(.19,1,.22,1)}
+
+  @media (max-width:760px){
+    .shell{padding:0 22px}
+    .hero{min-height:88vh; padding-bottom:34px}
+    .grid,.stack-row{grid-template-columns:1fr; gap:8px}
+    .when{padding-top:0; margin-bottom:6px}
+    .strip .shell{grid-template-columns:1fr}
+    .metric + .metric{padding-left:0; padding-top:0}
+    .metric{padding:20px 0; border-top:1px solid var(--line-soft)}
+    .metric:first-child{border-top:none}
+    .metric + .metric::before{display:none}
+    section.block{padding:56px 0}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}
+    h1 .line span{transform:none}
+    .lede,.actions{opacity:1}
+    .reveal{opacity:1; transform:none}
+    html{scroll-behavior:auto}
   }
 </style>
 </head>
 <body>
-<div class="wrap">
+<div id="progress" aria-hidden="true"></div>
 
-<header>
-  <div class="hero">
-    <img class="avatar" src="https://avatars.githubusercontent.com/u/121396163?v=4&s=400" alt="Bastián Carrizo">
-    <div>
-      <h1>Bastián Carrizo</h1>
-      <p class="tagline">Software engineer. Santiago, Chile.</p>
-      <div class="links">
-        <a href="https://github.com/crizoz">GitHub</a>
-        <a href="https://linkedin.com/in/bastiancarriz">LinkedIn</a>
-        <a href="mailto:bastiancarrizo@icloud.com">Email</a>
-        <a href="Bastian_Carrizo_Resume.pdf">Resume</a>
-      </div>
+<header class="hero">
+  <canvas id="signal" aria-hidden="true"></canvas>
+  <figure class="portrait">
+    <img src="me.jpg" alt="Bastián Carrizo in San Francisco, the Golden Gate Bridge behind him">
+    <figcaption>San Francisco, 2023</figcaption>
+  </figure>
+  <div class="shell">
+    <p class="eyebrow"><span class="dot"></span> Santiago, Chile · available from mid 2027</p>
+    <h1>
+      <span class="line"><span>Bastián</span></span>
+      <span class="line hollow"><span>Carrizo</span></span>
+    </h1>
+    <p class="lede">
+      I build the app, the backend behind it and <b>the data that proves it worked</b>. Lately that means
+      turning what a wearable measures into something a person can act on at seven in the morning.
+    </p>
+    <div class="actions">
+      <a class="btn primary" href="Bastian_Carrizo_Resume.pdf">Resume</a>
+      <a class="btn" href="https://github.com/crizoz">GitHub</a>
+      <a class="btn" href="https://linkedin.com/in/bastiancarriz">LinkedIn</a>
+      <a class="btn" href="mailto:bastiancarrizo@icloud.com">Email</a>
     </div>
   </div>
-  <p class="intro">
-    I build products end to end: the mobile app, the backend behind it and the data that says whether any of it worked.
-    Right now that happens at <a href="https://makana.cl">Makana</a>, a wellness startup, while I finish my Computer
-    Engineering degree at Universidad Andrés Bello.
-  </p>
 </header>
 
-<section>
-  <h2>Work</h2>
-
-  <div class="job">
-    <div class="job-head">
-      <p class="job-title">Software Engineer · Makana</p>
-      <span class="job-when">2026 – present</span>
+<div class="strip">
+  <div class="shell">
+    <div class="metric">
+      <span class="num"><i>2</i><sup>nd</sup></span>
+      <span class="cap">Claude Impact Lab, Anthropic<br>First AI financial inclusion hackathon in LatAm</span>
     </div>
-    <p class="job-where">Wellness startup · Santiago, Chile</p>
-    <ul>
-      <li>Flutter and Dart on mobile, Ruby on Rails with PostgreSQL on the backend, running on Google Cloud. I work on
-          every surface: the consumer app, the B2B side our client companies use, the marketing site and the internal tools.</li>
-      <li>The wearable integrations that bring sleep, recovery and workout data into the product, and the training and
-          nutrition modules that read from it.</li>
-      <li>The product analytics pipeline on Supabase and PostgreSQL, from the events the app emits to the queries that
-          answer whether a feature landed. Subscriptions and paywalls through RevenueCat on iOS and Android.</li>
-      <li>English and Portuguese localization of the exercise catalog, roughly 9,000 rows into production with no downtime.</li>
-      <li>Moved the product team onto weekly goals with a card per deliverable, which roughly tripled what we ship in a
-          week. I plan the roadmap with the CTO and CEO.</li>
-    </ul>
+    <div class="metric">
+      <span class="num" data-count="9000">0</span>
+      <span class="cap">Catalog rows localized into English<br>and Portuguese, live with no downtime</span>
+    </div>
+    <div class="metric">
+      <span class="num"><i>3×</i></span>
+      <span class="cap">What the product team ships per week<br>after moving to weekly goals and cards</span>
+    </div>
   </div>
+</div>
 
-  <div class="job">
-    <div class="job-head">
-      <p class="job-title">Technical Lead and Frontend Engineer · Meridian</p>
-      <span class="job-when">2026</span>
-    </div>
-    <p class="job-where">Claude Impact Lab, Anthropic · Santiago, Chile</p>
-    <ul>
-      <li>Second place in the first AI financial inclusion hackathon in Latin America. I designed the architecture of a
-          multi-agent system over Chilean securities and banking regulation, and built the React interface on top of
-          Claude Sonnet.</li>
-    </ul>
-  </div>
+<main class="shell">
 
-  <div class="job">
-    <div class="job-head">
-      <p class="job-title">Co-manager and Developer · AI Bootcamp 360</p>
-      <span class="job-when">2024 – 2025</span>
+  <section class="block reveal">
+    <h2 class="head">Now</h2>
+    <div class="grid">
+      <div class="when">2026 — present</div>
+      <div>
+        <p style="margin:0 0 14px; font-size:19px; max-width:58ch">
+          Software engineer at <a href="https://makana.cl" style="color:var(--accent); text-decoration:none; border-bottom:1px solid var(--line)">Makana</a>,
+          a wellness startup, while I finish my Computer Engineering degree at Universidad Andrés Bello.
+        </p>
+        <p style="margin:0; color:var(--muted); max-width:58ch">
+          I work across every surface of the product: the consumer app, the B2B side our client companies use, the
+          marketing site and the internal tools the team runs on. I also plan the roadmap with our CTO and CEO.
+        </p>
+      </div>
     </div>
-    <p class="job-where">Universidad Andrés Bello · Santiago, Chile</p>
-    <ul>
-      <li>Teaching tools on the OpenAI and Gemini APIs for a university AI program, plus the AWS EC2 infrastructure and
-          deployment pipeline behind them.</li>
-    </ul>
-  </div>
+  </section>
 
-  <div class="job">
-    <div class="job-head">
-      <p class="job-title">Founder and Full Stack Developer · Memoira</p>
-      <span class="job-when">2023 – present</span>
+  <section class="block reveal">
+    <h2 class="head">Work</h2>
+    <div class="entry">
+      <div class="grid">
+        <div class="when">2026 — present</div>
+        <div>
+          <h3 class="role">Software Engineer</h3>
+          <p class="org">Makana · wellness startup · Santiago, Chile</p>
+          <ul>
+            <li>Flutter and Dart on mobile, Ruby on Rails with PostgreSQL on the backend, running on Google Cloud.</li>
+            <li>The wearable integrations that bring sleep, recovery and workout data in, and the training and nutrition
+                modules that read from them.</li>
+            <li>The product analytics pipeline on Supabase and PostgreSQL, from the events the app emits to the queries
+                that answer whether a feature landed. Subscriptions and paywalls through RevenueCat on iOS and Android.</li>
+            <li>English and Portuguese localization of the exercise catalog, roughly 9,000 rows into production with no
+                downtime.</li>
+            <li>Moved the product team onto weekly goals with a card per deliverable, which roughly tripled what we ship
+                in a week.</li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <p class="job-where">O'Higgins Region and Santiago, Chile</p>
-    <ul>
-      <li>Face recognition over large photo catalogs so people can find themselves in an event archive in seconds.</li>
-    </ul>
+    <div class="entry">
+      <div class="grid">
+        <div class="when">2026</div>
+        <div>
+          <h3 class="role">Technical Lead and Frontend Engineer</h3>
+          <p class="org">Meridian · Claude Impact Lab, Anthropic · Santiago, Chile</p>
+          <ul>
+            <li>Second place in the first AI financial inclusion hackathon in Latin America. I designed the architecture
+                of a multi-agent system over Chilean securities and banking regulation, and built the React interface on
+                top of Claude Sonnet.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="grid">
+        <div class="when">2024 — 2025</div>
+        <div>
+          <h3 class="role">Co-manager and Developer</h3>
+          <p class="org">AI Bootcamp 360 · Universidad Andrés Bello</p>
+          <ul>
+            <li>Teaching tools on the OpenAI and Gemini APIs for a university AI program, plus the AWS EC2
+                infrastructure and deployment pipeline behind them.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="grid">
+        <div class="when">2023 — present</div>
+        <div>
+          <h3 class="role">Founder and Full Stack Developer</h3>
+          <p class="org">Memoira · O'Higgins Region and Santiago, Chile</p>
+          <ul>
+            <li>Face recognition over large photo catalogs so people can find themselves in an event archive in seconds.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2 class="head">Projects</h2>
+    <div class="cards">
+      <a class="card" href="https://meridian-claude-impact-lab.vercel.app">
+        <span class="flag">2nd place · Anthropic</span>
+        <h3>Meridian</h3>
+        <p>A multi-agent system that reads Chilean securities and banking regulation and answers questions about it in
+           plain language.</p>
+        <div class="tags">React · Claude Sonnet · multi-agent</div>
+        <span class="go">Live demo →</span>
+      </a>
+      <a class="card" href="https://github.com/crizoz/vitals">
+        <span class="flag">macOS</span>
+        <h3>Vitals</h3>
+        <p>A native menu bar app for your Mac's vitals and your real Claude usage limits, read from where they actually
+           live.</p>
+        <div class="tags">Swift · SwiftUI</div>
+        <span class="go">Source →</span>
+      </a>
+      <a class="card" href="https://github.com/crizoz/fleet">
+        <span class="flag">macOS</span>
+        <h3>Fleet</h3>
+        <p>A live view of every Claude Code session running in your terminals, on the desktop, in the menu bar and as a
+           widget.</p>
+        <div class="tags">Swift · SwiftUI · WidgetKit</div>
+        <span class="go">Source →</span>
+      </a>
+      <a class="card" href="https://github.com/crizoz/bootcamp-ia-react">
+        <span class="flag">Education</span>
+        <h3>AI Bootcamp 360</h3>
+        <p>The platform I built and co-managed for a university AI program, on the OpenAI and Gemini APIs.</p>
+        <div class="tags">React · Vite · AWS</div>
+        <span class="go">Source →</span>
+      </a>
+      <div class="card">
+        <span class="flag">Thesis</span>
+        <h3>CerézIA</h3>
+        <p>IoT sensors and machine learning models that predict harvest conditions for the Chilean cherry export
+           industry.</p>
+        <div class="tags">Python · IoT · ML</div>
+      </div>
+      <div class="card">
+        <span class="flag">In progress</span>
+        <h3>Internship platform</h3>
+        <p>Commissioned by the UNAB School of Engineering. I lead the team replacing the paper process every engineering
+           student goes through.</p>
+        <div class="tags">Full stack</div>
+      </div>
+      <div class="card">
+        <span class="flag">Fintech</span>
+        <h3>Vakita</h3>
+        <p>Automated shared payments, built on Chilean open banking and local payment gateways.</p>
+        <div class="tags">Fintoc · Transbank · Node.js</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2 class="head">Stack</h2>
+    <dl style="margin:0">
+      <div class="stack-row"><dt>Languages</dt><dd>TypeScript, JavaScript, Dart, Python, Ruby, Swift, SQL. Reading Java and Kotlin.</dd></div>
+      <div class="stack-row"><dt>Mobile</dt><dd>Flutter, SwiftUI, WidgetKit, App Store and Play Store releases, TestFlight.</dd></div>
+      <div class="stack-row"><dt>Backend</dt><dd>Ruby on Rails, Node.js, FastAPI, REST APIs, background jobs.</dd></div>
+      <div class="stack-row"><dt>Data</dt><dd>PostgreSQL, Supabase, TimescaleDB, MySQL, MongoDB, Prisma.</dd></div>
+      <div class="stack-row"><dt>Cloud</dt><dd>AWS EC2, Google Cloud, Docker, Git, GitHub Actions, Vercel, Railway.</dd></div>
+      <div class="stack-row"><dt>Frontend</dt><dd>React, Next.js, Astro, Vite, Tailwind CSS.</dd></div>
+      <div class="stack-row"><dt>AI</dt><dd>Claude API, OpenAI and Gemini APIs, multi-agent architectures, RAG. Claude Code and Cursor daily.</dd></div>
+    </dl>
+  </section>
+
+  <section class="block reveal" style="border-bottom:none">
+    <h2 class="head">Education</h2>
+    <div class="grid">
+      <div class="when">2020 — 2027</div>
+      <div>
+        <h3 class="role">B.Eng. in Computer Engineering</h3>
+        <p class="org" style="margin:0">Universidad Andrés Bello, Santiago. Bachelor's degree awarded Cum Laude.
+          Graduating in the first half of 2027.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="ticker" aria-hidden="true"><div class="rail"><span><b>Flutter</b></span><span>Ruby on Rails</span><span><b>PostgreSQL</b></span><span><b>Swift</b></span><span>SwiftUI</span><span>TypeScript</span><span>React</span><span>Google Cloud</span><span>AWS</span><span>Supabase</span><span>Prisma</span><span><b>Claude API</b></span><span>RevenueCat</span><span>Docker</span><span>GitHub Actions</span><span>Python</span><span>Dart</span><span>Node.js</span><span><b>Flutter</b></span><span>Ruby on Rails</span><span><b>PostgreSQL</b></span><span><b>Swift</b></span><span>SwiftUI</span><span>TypeScript</span><span>React</span><span>Google Cloud</span><span>AWS</span><span>Supabase</span><span>Prisma</span><span><b>Claude API</b></span><span>RevenueCat</span><span>Docker</span><span>GitHub Actions</span><span>Python</span><span>Dart</span><span>Node.js</span></div></div>
+
+
+
+<section class="postcard reveal" id="postcard">
+  <img src="gg.jpg" alt="The Golden Gate Bridge seen from Fort Point, San Francisco">
+  <div class="copy shell">
+    <p class="kicker">San Francisco, December 2023</p>
+    <h2>Open to working abroad, and to moving for the right team.</h2>
   </div>
 </section>
 
-<section>
-  <h2>Projects</h2>
-  <div class="cards">
-
-    <a class="card" href="https://meridian-claude-impact-lab.vercel.app">
-      <span class="badge">2nd place · Anthropic</span>
-      <h3>Meridian</h3>
-      <p>A multi-agent system that reads Chilean securities and banking regulation and answers questions about it in
-         plain language.</p>
-      <div class="tags">React · Claude Sonnet · multi-agent</div>
-    </a>
-
-    <a class="card" href="https://github.com/crizoz/vitals">
-      <h3>Vitals</h3>
-      <p>A native macOS menu bar app for your Mac's vitals and your real Claude usage limits, read from where they
-         actually live.</p>
-      <div class="tags">Swift · SwiftUI · macOS</div>
-    </a>
-
-    <a class="card" href="https://github.com/crizoz/fleet">
-      <h3>Fleet</h3>
-      <p>A live view of every Claude Code session running in your terminals, on the desktop, in the menu bar and as a
-         widget.</p>
-      <div class="tags">Swift · SwiftUI · WidgetKit</div>
-    </a>
-
-    <a class="card" href="https://github.com/crizoz/bootcamp-ia-react">
-      <h3>AI Bootcamp 360</h3>
-      <p>The educational platform I built and co-managed for a university AI program, on the OpenAI and Gemini APIs.</p>
-      <div class="tags">React · Vite · AWS</div>
-    </a>
-
-    <div class="card">
-      <h3>CerézIA</h3>
-      <p>My thesis. IoT sensors and machine learning models that predict harvest conditions for the Chilean cherry
-         export industry.</p>
-      <div class="tags">Python · IoT · ML</div>
-    </div>
-
-    <div class="card">
-      <h3>Internship platform, UNAB Engineering</h3>
-      <p>Commissioned by the faculty. I lead the team replacing the paper process every engineering student goes
-         through.</p>
-      <div class="tags">Full stack · in progress</div>
-    </div>
-
-    <div class="card">
-      <h3>Vakita</h3>
-      <p>Fintech for automated shared payments, built on Chilean open banking and local payment gateways.</p>
-      <div class="tags">Fintoc · Transbank · Node.js</div>
-    </div>
-
+<footer class="shell">
+  <p style="margin:0; font-size:clamp(20px,3vw,28px); font-family:var(--display); font-weight:700; letter-spacing:-.02em">Let's talk.</p>
+  <p style="margin:8px 0 0; font-size:19px"><a class="mail" href="mailto:bastiancarrizo@icloud.com">bastiancarrizo@icloud.com</a></p>
+  <div class="foot-meta">
+    <span>Santiago, Chile</span>
+    <span>Spanish and English</span>
+    <a href="https://github.com/crizoz" style="text-decoration:none">github.com/crizoz</a>
   </div>
-</section>
-
-<section class="stack">
-  <h2>Stack</h2>
-  <p><strong>Languages</strong> <span>TypeScript, JavaScript, Dart, Python, Ruby, Swift, SQL. Reading Java and Kotlin.</span></p>
-  <p><strong>Mobile</strong> <span>Flutter, SwiftUI, WidgetKit, App Store and Play Store releases, TestFlight.</span></p>
-  <p><strong>Backend</strong> <span>Ruby on Rails, Node.js, FastAPI, REST APIs, background jobs.</span></p>
-  <p><strong>Data</strong> <span>PostgreSQL, Supabase, TimescaleDB, MySQL, MongoDB, Prisma.</span></p>
-  <p><strong>Cloud</strong> <span>AWS EC2, Google Cloud, Docker, Git, GitHub Actions, Vercel, Railway.</span></p>
-  <p><strong>Frontend</strong> <span>React, Next.js, Astro, Vite, Tailwind CSS.</span></p>
-  <p><strong>AI</strong> <span>Claude API, OpenAI and Gemini APIs, multi-agent architectures, RAG. Claude Code and Cursor daily.</span></p>
-</section>
-
-<section>
-  <h2>Education</h2>
-  <div class="job">
-    <div class="job-head">
-      <p class="job-title">B.Eng. in Computer Engineering</p>
-      <span class="job-when">2020 – 2027</span>
-    </div>
-    <p class="job-where">Universidad Andrés Bello, Santiago. Bachelor's degree awarded Cum Laude.</p>
-  </div>
-</section>
-
-<footer>
-  <p>Written in Spanish and English. Open to working abroad.<br>
-  <a href="mailto:bastiancarrizo@icloud.com">bastiancarrizo@icloud.com</a></p>
 </footer>
 
-</div>
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- scroll progress ---- */
+  var bar = document.getElementById('progress');
+  if (bar){
+    var ticking = false;
+    window.addEventListener('scroll', function(){
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+        ticking = false;
+      });
+    }, {passive:true});
+  }
+
+  /* ---- scroll reveal ---- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, {rootMargin: '0px 0px -8% 0px', threshold: 0.08});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* ---- count up the one metric that is a number ---- */
+  var counters = document.querySelectorAll('[data-count]');
+  var cio = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (!en.isIntersecting) return;
+      var el = en.target, target = parseInt(el.getAttribute('data-count'), 10), start = null;
+      cio.unobserve(el);
+      if (reduce){ el.textContent = target.toLocaleString('en-US'); return; }
+      function step(ts){
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / 1100, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased).toLocaleString('en-US');
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }, {threshold: 0.6});
+  counters.forEach(function(el){ cio.observe(el); });
+
+  try {
+  /* ---- signal trace in the hero ---- */
+  var cv = document.getElementById('signal');
+  if (cv && cv.getContext) {
+    var ctx = cv.getContext('2d'), w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var t = 0, amp = 1, targetAmp = 1;
+
+    function resize(){
+      w = cv.clientWidth; h = cv.clientHeight;
+      cv.width = w * dpr; cv.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function accent(){
+      return getComputedStyle(document.documentElement).getPropertyValue('--trace').trim() || '#ffb020';
+    }
+
+    /* a resting signal with an occasional beat, the way a recovery trace looks */
+    function value(x, phase){
+      var base = Math.sin(x * 0.011 + phase) * 12
+               + Math.sin(x * 0.026 + phase * 1.7) * 6
+               + Math.sin(x * 0.005 - phase * 0.6) * 17;
+      var beat = 0, cycle = 420, p = (x + phase * 60) % cycle;
+      if (p > 0 && p < 46){
+        var k = p / 46;
+        beat = Math.exp(-Math.pow((k - 0.42) * 5.4, 2)) * 74 - Math.exp(-Math.pow((k - 0.63) * 8, 2)) * 26;
+      }
+      return base + beat;
+    }
+
+    function draw(){
+      ctx.clearRect(0, 0, w, h);
+      amp += (targetAmp - amp) * 0.045;
+      var mid = h * 0.52, col = accent();
+
+      /* the trace */
+      ctx.beginPath();
+      for (var x2 = 0; x2 <= w; x2 += 2){
+        var y2 = mid + value(x2, t) * amp;
+        x2 === 0 ? ctx.moveTo(x2, y2) : ctx.lineTo(x2, y2);
+      }
+      ctx.globalAlpha = 0.78; ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.stroke();
+
+      /* the reading head */
+      var hx = w * 0.82, hy = mid + value(hx, t) * amp;
+      ctx.globalAlpha = 1;
+      ctx.beginPath(); ctx.arc(hx, hy, 3.4, 0, Math.PI * 2); ctx.fillStyle = col; ctx.fill();
+      ctx.beginPath(); ctx.arc(hx, hy, 11, 0, Math.PI * 2);
+      ctx.globalAlpha = 0.13; ctx.fill();
+      ctx.globalAlpha = 1;
+
+      t += 0.0085;
+      requestAnimationFrame(draw);
+    }
+
+    if (reduce){
+      /* one static frame, no loop */
+      var mid0 = cv.clientHeight * 0.52;
+      ctx.beginPath();
+      for (var x3 = 0; x3 <= cv.clientWidth; x3 += 2){
+        var y3 = mid0 + value(x3, 0);
+        x3 === 0 ? ctx.moveTo(x3, y3) : ctx.lineTo(x3, y3);
+      }
+      ctx.strokeStyle = accent(); ctx.globalAlpha = 0.4; ctx.lineWidth = 1.6; ctx.stroke();
+    } else {
+      draw();
+      /* the trace reacts to the cursor, calmer at rest */
+      document.querySelector('.hero').addEventListener('pointermove', function(e){
+        var r = cv.getBoundingClientRect();
+        targetAmp = 0.7 + (1 - Math.abs((e.clientY - r.top) / r.height - 0.5) * 2) * 0.85;
+      });
+      document.querySelector('.hero').addEventListener('pointerleave', function(){ targetAmp = 1; });
+    }
+  }
+  } catch (e) { /* the page reads fine without the trace */ }
+})();
+</script>
 </body>
 </html>
