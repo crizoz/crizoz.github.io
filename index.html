@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bastián Carrizo</title>
+<meta name="description" content="Software engineer in Santiago, Chile. I build mobile, backend and data products.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+<style>
+  :root{
+    --bg:#fbfbfd; --panel:#ffffff; --text:#1d1d1f; --muted:#6e6e73;
+    --line:#e3e3e6; --accent:#0071e3; --chip:#f2f2f4;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#000; --panel:#111113; --text:#f5f5f7; --muted:#98989d;
+           --line:#2a2a2d; --accent:#2997ff; --chip:#1c1c1f; }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size:17px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:740px; margin:0 auto; padding:0 24px}
+  header{padding:72px 0 44px}
+  .hero{display:flex; gap:28px; align-items:center; flex-wrap:wrap}
+  .avatar{
+    width:104px; height:104px; border-radius:50%; object-fit:cover;
+    border:1px solid var(--line); background:var(--chip); flex-shrink:0;
+  }
+  h1{font-size:38px; line-height:1.1; letter-spacing:-0.02em; margin:0 0 6px; font-weight:650}
+  .tagline{color:var(--muted); margin:0 0 14px; font-size:18px}
+  .links{display:flex; flex-wrap:wrap; gap:8px}
+  .links a{
+    display:inline-block; padding:5px 13px; border-radius:980px; font-size:14.5px;
+    text-decoration:none; color:var(--text); background:var(--chip);
+    border:1px solid transparent; transition:border-color .15s ease, color .15s ease;
+  }
+  .links a:hover{border-color:var(--line); color:var(--accent)}
+  .intro{font-size:19px; margin:36px 0 0; max-width:62ch}
+  .intro a{color:var(--accent); text-decoration:none}
+  .intro a:hover{text-decoration:underline}
+  section{padding:40px 0; border-top:1px solid var(--line)}
+  h2{font-size:13px; text-transform:uppercase; letter-spacing:.09em; color:var(--muted);
+     margin:0 0 22px; font-weight:600}
+  .job{margin-bottom:30px}
+  .job:last-child{margin-bottom:0}
+  .job-head{display:flex; justify-content:space-between; align-items:baseline; gap:14px; flex-wrap:wrap}
+  .job-title{font-weight:600; font-size:17.5px; margin:0}
+  .job-when{color:var(--muted); font-size:14.5px; white-space:nowrap}
+  .job-where{color:var(--muted); font-size:15px; margin:1px 0 9px}
+  ul{margin:0; padding-left:19px}
+  li{margin-bottom:5px}
+  .cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:14px}
+  .card{
+    display:block; padding:18px 20px; border:1px solid var(--line); border-radius:14px;
+    background:var(--panel); text-decoration:none; color:inherit;
+    transition:transform .18s ease, border-color .18s ease;
+  }
+  .card:hover{transform:translateY(-2px); border-color:var(--accent)}
+  .card h3{margin:0 0 5px; font-size:16.5px; font-weight:600}
+  .card p{margin:0; color:var(--muted); font-size:15px; line-height:1.45}
+  .card .tags{margin-top:11px; font-size:12.5px; color:var(--muted); letter-spacing:.02em}
+  .badge{
+    display:inline-block; font-size:11.5px; font-weight:600; letter-spacing:.03em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:7px;
+  }
+  .stack p{margin:0 0 9px; font-size:16px}
+  .stack strong{font-weight:600}
+  .stack span{color:var(--muted)}
+  footer{padding:44px 0 72px; border-top:1px solid var(--line); color:var(--muted); font-size:15px}
+  footer a{color:var(--accent); text-decoration:none}
+  @media (max-width:560px){
+    header{padding:48px 0 32px}
+    h1{font-size:31px}
+    .avatar{width:84px; height:84px}
+    .intro{font-size:17.5px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="hero">
+    <img class="avatar" src="https://avatars.githubusercontent.com/u/121396163?v=4&s=400" alt="Bastián Carrizo">
+    <div>
+      <h1>Bastián Carrizo</h1>
+      <p class="tagline">Software engineer. Santiago, Chile.</p>
+      <div class="links">
+        <a href="https://github.com/crizoz">GitHub</a>
+        <a href="https://linkedin.com/in/bastiancarriz">LinkedIn</a>
+        <a href="mailto:bastiancarrizo@icloud.com">Email</a>
+        <a href="Bastian_Carrizo_Resume.pdf">Resume</a>
+      </div>
+    </div>
+  </div>
+  <p class="intro">
+    I build products end to end: the mobile app, the backend behind it and the data that says whether any of it worked.
+    Right now that happens at <a href="https://makana.cl">Makana</a>, a wellness startup, while I finish my Computer
+    Engineering degree at Universidad Andrés Bello.
+  </p>
+</header>
+
+<section>
+  <h2>Work</h2>
+
+  <div class="job">
+    <div class="job-head">
+      <p class="job-title">Software Engineer · Makana</p>
+      <span class="job-when">2026 – present</span>
+    </div>
+    <p class="job-where">Wellness startup · Santiago, Chile</p>
+    <ul>
+      <li>Flutter and Dart on mobile, Ruby on Rails with PostgreSQL on the backend, running on Google Cloud. I work on
+          every surface: the consumer app, the B2B side our client companies use, the marketing site and the internal tools.</li>
+      <li>The wearable integrations that bring sleep, recovery and workout data into the product, and the training and
+          nutrition modules that read from it.</li>
+      <li>The product analytics pipeline on Supabase and PostgreSQL, from the events the app emits to the queries that
+          answer whether a feature landed. Subscriptions and paywalls through RevenueCat on iOS and Android.</li>
+      <li>English and Portuguese localization of the exercise catalog, roughly 9,000 rows into production with no downtime.</li>
+      <li>Moved the product team onto weekly goals with a card per deliverable, which roughly tripled what we ship in a
+          week. I plan the roadmap with the CTO and CEO.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head">
+      <p class="job-title">Technical Lead and Frontend Engineer · Meridian</p>
+      <span class="job-when">2026</span>
+    </div>
+    <p class="job-where">Claude Impact Lab, Anthropic · Santiago, Chile</p>
+    <ul>
+      <li>Second place in the first AI financial inclusion hackathon in Latin America. I designed the architecture of a
+          multi-agent system over Chilean securities and banking regulation, and built the React interface on top of
+          Claude Sonnet.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head">
+      <p class="job-title">Co-manager and Developer · AI Bootcamp 360</p>
+      <span class="job-when">2024 – 2025</span>
+    </div>
+    <p class="job-where">Universidad Andrés Bello · Santiago, Chile</p>
+    <ul>
+      <li>Teaching tools on the OpenAI and Gemini APIs for a university AI program, plus the AWS EC2 infrastructure and
+          deployment pipeline behind them.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head">
+      <p class="job-title">Founder and Full Stack Developer · Memoira</p>
+      <span class="job-when">2023 – present</span>
+    </div>
+    <p class="job-where">O'Higgins Region and Santiago, Chile</p>
+    <ul>
+      <li>Face recognition over large photo catalogs so people can find themselves in an event archive in seconds.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Projects</h2>
+  <div class="cards">
+
+    <a class="card" href="https://meridian-claude-impact-lab.vercel.app">
+      <span class="badge">2nd place · Anthropic</span>
+      <h3>Meridian</h3>
+      <p>A multi-agent system that reads Chilean securities and banking regulation and answers questions about it in
+         plain language.</p>
+      <div class="tags">React · Claude Sonnet · multi-agent</div>
+    </a>
+
+    <a class="card" href="https://github.com/crizoz/vitals">
+      <h3>Vitals</h3>
+      <p>A native macOS menu bar app for your Mac's vitals and your real Claude usage limits, read from where they
+         actually live.</p>
+      <div class="tags">Swift · SwiftUI · macOS</div>
+    </a>
+
+    <a class="card" href="https://github.com/crizoz/fleet">
+      <h3>Fleet</h3>
+      <p>A live view of every Claude Code session running in your terminals, on the desktop, in the menu bar and as a
+         widget.</p>
+      <div class="tags">Swift · SwiftUI · WidgetKit</div>
+    </a>
+
+    <a class="card" href="https://github.com/crizoz/bootcamp-ia-react">
+      <h3>AI Bootcamp 360</h3>
+      <p>The educational platform I built and co-managed for a university AI program, on the OpenAI and Gemini APIs.</p>
+      <div class="tags">React · Vite · AWS</div>
+    </a>
+
+    <div class="card">
+      <h3>CerézIA</h3>
+      <p>My thesis. IoT sensors and machine learning models that predict harvest conditions for the Chilean cherry
+         export industry.</p>
+      <div class="tags">Python · IoT · ML</div>
+    </div>
+
+    <div class="card">
+      <h3>Internship platform, UNAB Engineering</h3>
+      <p>Commissioned by the faculty. I lead the team replacing the paper process every engineering student goes
+         through.</p>
+      <div class="tags">Full stack · in progress</div>
+    </div>
+
+    <div class="card">
+      <h3>Vakita</h3>
+      <p>Fintech for automated shared payments, built on Chilean open banking and local payment gateways.</p>
+      <div class="tags">Fintoc · Transbank · Node.js</div>
+    </div>
+
+  </div>
+</section>
+
+<section class="stack">
+  <h2>Stack</h2>
+  <p><strong>Languages</strong> <span>TypeScript, JavaScript, Dart, Python, Ruby, Swift, SQL. Reading Java and Kotlin.</span></p>
+  <p><strong>Mobile</strong> <span>Flutter, SwiftUI, WidgetKit, App Store and Play Store releases, TestFlight.</span></p>
+  <p><strong>Backend</strong> <span>Ruby on Rails, Node.js, FastAPI, REST APIs, background jobs.</span></p>
+  <p><strong>Data</strong> <span>PostgreSQL, Supabase, TimescaleDB, MySQL, MongoDB, Prisma.</span></p>
+  <p><strong>Cloud</strong> <span>AWS EC2, Google Cloud, Docker, Git, GitHub Actions, Vercel, Railway.</span></p>
+  <p><strong>Frontend</strong> <span>React, Next.js, Astro, Vite, Tailwind CSS.</span></p>
+  <p><strong>AI</strong> <span>Claude API, OpenAI and Gemini APIs, multi-agent architectures, RAG. Claude Code and Cursor daily.</span></p>
+</section>
+
+<section>
+  <h2>Education</h2>
+  <div class="job">
+    <div class="job-head">
+      <p class="job-title">B.Eng. in Computer Engineering</p>
+      <span class="job-when">2020 – 2027</span>
+    </div>
+    <p class="job-where">Universidad Andrés Bello, Santiago. Bachelor's degree awarded Cum Laude.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Written in Spanish and English. Open to working abroad.<br>
+  <a href="mailto:bastiancarrizo@icloud.com">bastiancarrizo@icloud.com</a></p>
+</footer>
+
+</div>
+</body>
+</html>
